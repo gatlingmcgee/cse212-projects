@@ -22,7 +22,7 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
 {
     var set = new HashSet<string>(words);
-    var seen = new HashSet<string>();
+    var valueSeen = new HashSet<string>();
     var result = new List<string>();
 
     foreach (var word in words)
@@ -31,12 +31,12 @@ public static class SetsAndMaps
 
         var reversed = new string(new[] { word[1], word[0] });
 
-        if (set.Contains(reversed) && !seen.Contains(word) && !seen.Contains(reversed))
+        if (set.Contains(reversed) && !valueSeen.Contains(word) && !valueSeen.Contains(reversed))
         {
             var pair = string.Compare(word, reversed) < 0 ? $"{word} & {reversed}" : $"{reversed} & {word}";
             result.Add(pair);
-            seen.Add(word);
-            seen.Add(reversed);
+            valueSeen.Add(word);
+            valueSeen.Add(reversed);
         }
     }
 
@@ -56,16 +56,25 @@ public static class SetsAndMaps
     /// <param name="filename">The name of the file to read</param>
     /// <returns>fixed array of divisors</returns>
     public static Dictionary<string, int> SummarizeDegrees(string filename)
-    {
-        var degrees = new Dictionary<string, int>();
-        foreach (var line in File.ReadLines(filename))
-        {
-            var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
-        }
+{
+    var degrees = new Dictionary<string, int>();
 
-        return degrees;
+    foreach (var line in File.ReadLines(filename))
+    {
+        var fields = line.Split(',');
+        if (fields.Length > 3)
+        {
+            var degree = fields[3].Trim();
+            if (degrees.ContainsKey(degree))
+                degrees[degree]++;
+            else
+                degrees[degree] = 1;
+        }
     }
+
+    return degrees;
+}
+
 
     /// <summary>
     /// Determine if 'word1' and 'word2' are anagrams.  An anagram
