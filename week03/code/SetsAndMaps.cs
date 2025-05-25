@@ -92,11 +92,35 @@ public static class SetsAndMaps
     /// Reminder: You can access a letter by index in a string by 
     /// using the [] notation.
     /// </summary>
-    public static bool IsAnagram(string word1, string word2)
+public static bool IsAnagram(string word1, string word2)
+{
+    string Normalize(string word) =>
+        new string(word.ToLower().Where(i => !char.IsWhiteSpace(i)).ToArray());
+
+    var wordOne = Normalize(word1);
+    var wordTwo = Normalize(word2);
+
+    if (wordOne.Length != wordTwo.Length) return false;
+
+    var anagrams = new Dictionary<char, int>();
+
+    foreach (var i in wordOne)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        if (!anagrams.ContainsKey(i))
+            anagrams[i] = 1;
+        else
+            anagrams[i]++;
     }
+
+    foreach (var i in wordTwo)
+    {
+        if (!anagrams.ContainsKey(i)) return false;
+        anagrams[i]--;
+        if (anagrams[i] == 0) anagrams.Remove(i);
+    }
+
+    return anagrams.Count == 0;
+}
 
     /// <summary>
     /// This function will read JSON (Javascript Object Notation) data from the 
