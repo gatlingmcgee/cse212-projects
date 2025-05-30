@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Globalization;
 
 public class LinkedList : IEnumerable<int>
 {
@@ -32,7 +33,19 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void InsertTail(int value)
     {
-        // TODO Problem 1
+        Node newNode = new(value); // New node
+        if (_tail is null)
+        {
+            _head = newNode; // Pointing to node
+            _tail = newNode;
+        }
+
+        else
+        {
+            _tail.Next = newNode; // Tails next
+            newNode.Prev = _tail; // Old tail
+            _tail = newNode;
+        }
     }
 
 
@@ -64,7 +77,16 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void RemoveTail()
     {
-        // TODO Problem 2
+        if (_head == _tail)
+        {
+            _head = null;
+            _tail = null;
+        }
+        else if (_tail is not null && _tail.Prev is not null)
+        {
+            _tail.Prev.Next = null;
+            _tail = _tail.Prev;
+        }
     }
 
     /// <summary>
@@ -108,7 +130,24 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void Remove(int value)
     {
-        // TODO Problem 3
+        Node? curr = _head;
+        while (curr is not null)
+        {
+
+            if (curr.Data == value)
+            {
+                if (curr == _tail)
+                {
+                    RemoveTail();
+                    return;
+                }
+                curr.Next!.Prev = curr.Prev;
+                curr.Prev!.Next = curr.Next;
+                return;
+            }
+            curr = curr.Next;
+
+        }
     }
 
     /// <summary>
